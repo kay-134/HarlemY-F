@@ -1,0 +1,442 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4facfe 100%);
+    background-attachment: fixed;
+    color: #2d3748;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.95;
+}
+
+/* Main Content Layout */
+.content {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Events Section */
+.events-section {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.events-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #1a202c;
+}
+
+.events-list {
+    max-height: 700px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* Scrollbar Styling */
+.events-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.events-list::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.events-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.events-list::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Event Cards */
+.event-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    border: 2px solid;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Category-specific border colors */
+.event-card.fun-event {
+    border-color: #9f7aea;
+}
+
+.event-card.fundraising {
+    border-color: #48bb78;
+}
+
+.event-card.ministry-planned {
+    border-color: #4299e1;
+}
+
+.event-card.teen-service {
+    border-color: #ed8936;
+}
+
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 0.75rem;
+}
+
+.event-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a202c;
+    margin-bottom: 0.25rem;
+}
+
+.event-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: white;
+    white-space: nowrap;
+}
+
+.event-badge.fun-event {
+    background: #9f7aea;
+}
+
+.event-badge.fundraising {
+    background: #48bb78;
+}
+
+.event-badge.ministry-planned {
+    background: #4299e1;
+}
+
+.event-badge.teen-service {
+    background: #ed8936;
+}
+
+.event-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.event-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4a5568;
+    font-size: 0.9rem;
+}
+
+.event-detail i {
+    width: 16px;
+    color: #718096;
+}
+
+/* Calendar Section */
+.calendar-section {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.calendar-header h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+.nav-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.nav-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.nav-btn:active {
+    transform: scale(0.95);
+}
+
+/* Calendar Grid */
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.weekday {
+    text-align: center;
+    font-weight: 600;
+    color: #4a5568;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+}
+
+.day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    position: relative;
+    color: #2d3748;
+}
+
+.day:hover {
+    background: #f7fafc;
+    transform: scale(1.05);
+}
+
+.day.other-month {
+    color: #cbd5e1;
+}
+
+.day.today {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-weight: 600;
+}
+
+/* Event indicators (colored rings) */
+.day.has-event {
+    box-shadow: inset 0 0 0 2px;
+}
+
+.day.has-event.fun-event {
+    box-shadow: inset 0 0 0 2px #9f7aea;
+}
+
+.day.has-event.fundraising {
+    box-shadow: inset 0 0 0 2px #48bb78;
+}
+
+.day.has-event.ministry-planned {
+    box-shadow: inset 0 0 0 2px #4299e1;
+}
+
+.day.has-event.teen-service {
+    box-shadow: inset 0 0 0 2px #ed8936;
+}
+
+.day.has-event:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+/* Multiple events indicator */
+.day.has-multiple-events::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: currentColor;
+    border-radius: 50%;
+}
+
+/* Legend */
+.legend {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #e2e8f0;
+}
+
+.legend h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2d3748;
+}
+
+.legend-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #4a5568;
+}
+
+.legend-badge {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 3px solid;
+}
+
+.legend-badge.fun-event {
+    border-color: #9f7aea;
+}
+
+.legend-badge.fundraising {
+    border-color: #48bb78;
+}
+
+.legend-badge.ministry-planned {
+    border-color: #4299e1;
+}
+
+.legend-badge.teen-service {
+    border-color: #ed8936;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .content {
+        grid-template-columns: 1fr;
+    }
+
+    .events-section {
+        order: 1;
+    }
+
+    .calendar-section {
+        order: 2;
+    }
+
+    .events-list {
+        max-height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .calendar-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .legend-items {
+        grid-template-columns: 1fr;
+    }
+
+    .day {
+        font-size: 0.9rem;
+    }
+
+    .weekday {
+        font-size: 0.8rem;
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 1rem 0.5rem;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .events-section,
+    .calendar-section {
+        padding: 1rem;
+        border-radius: 12px;
+    }
+
+    .event-card {
+        padding: 1rem;
+    }
+
+    .event-title {
+        font-size: 1rem;
+    }
+
+    .nav-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .day {
+        font-size: 0.85rem;
+    }
+}

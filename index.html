@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youth Ministry Events Calendar</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Youth Ministry Events</h1>
+            <p class="subtitle">Stay connected with upcoming church activities</p>
+        </header>
+
+        <main class="content">
+            <!-- Left Column: Upcoming Events -->
+            <section class="events-section">
+                <h2>Upcoming Events</h2>
+                <div class="events-list" id="eventsList">
+                    <!-- Events will be dynamically loaded here -->
+                </div>
+            </section>
+
+            <!-- Right Column: Calendar -->
+            <section class="calendar-section">
+                <div class="calendar-header">
+                    <button class="nav-btn" id="prevMonth">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h2 id="currentMonth">January 2026</h2>
+                    <button class="nav-btn" id="nextMonth">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="calendar" id="calendar">
+                    <div class="weekdays">
+                        <div class="weekday">Sun</div>
+                        <div class="weekday">Mon</div>
+                        <div class="weekday">Tue</div>
+                        <div class="weekday">Wed</div>
+                        <div class="weekday">Thu</div>
+                        <div class="weekday">Fri</div>
+                        <div class="weekday">Sat</div>
+                    </div>
+                    <div class="days" id="calendarDays">
+                        <!-- Calendar days will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <!-- Category Legend -->
+                <div class="legend">
+                    <h3>Event Categories</h3>
+                    <div class="legend-items">
+                        <div class="legend-item">
+                            <span class="legend-badge fun-event"></span>
+                            <span>Fun Event</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-badge fundraising"></span>
+                            <span>Fundraising</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-badge ministry-planned"></span>
+                            <span>Y&F Ministry</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-badge teen-service"></span>
+                            <span>Teen Service</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
