@@ -6,9 +6,9 @@
 }
 
 body {
-    font-family: 'Funnel Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: white;
-    color: #2d3748;
+    font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: #1A2944;
+    color: white;
     line-height: 1.6;
     min-height: 100vh;
     padding: 1rem;
@@ -23,19 +23,20 @@ body {
 header {
     text-align: center;
     margin-bottom: 1rem;
-    color: #1A2944;
+    color: white;
 }
 
 header h1 {
-    font-family: 'Gravitas One', serif;
+    font-family: 'Lexend', sans-serif;
     font-size: 2rem;
-    font-weight: 400;
+    font-weight: 600;
     margin-bottom: 0.5rem;
 }
 
 .subtitle {
     font-size: 1rem;
-    opacity: 0.95;
+    opacity: 0.9;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* Main Content Layout */
@@ -49,21 +50,22 @@ header h1 {
 
 /* Events Section */
 .events-section {
-    background: white;
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     padding: 1.5rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     max-height: calc(100vh - 140px);
     display: flex;
     flex-direction: column;
 }
 
 .events-section h2 {
-    font-family: 'Gravitas One', serif;
+    font-family: 'Lexend', sans-serif;
     font-size: 1.5rem;
-    font-weight: 400;
+    font-weight: 600;
     margin-bottom: 1.5rem;
-    color: #1A2944;
+    color: white;
 }
 
 .events-list {
@@ -78,50 +80,52 @@ header h1 {
 }
 
 .events-list::-webkit-scrollbar-track {
-    background: #f1f5f9;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 10px;
 }
 
 .events-list::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: #93504B;
     border-radius: 10px;
 }
 
 .events-list::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+    background: #a65d57;
 }
 
 /* Event Cards */
 .event-card {
-    background: white;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     padding: 1.25rem;
     margin-bottom: 1rem;
     border: 2px solid;
     transition: all 0.3s ease;
     cursor: pointer;
+    backdrop-filter: blur(10px);
 }
 
 .event-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 20px rgba(147, 80, 75, 0.3);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 /* Category-specific border colors */
 .event-card.fun-event {
-    border-color: #9f7aea;
+    border-color: #93504B;
 }
 
 .event-card.fundraising {
-    border-color: #48bb78;
+    border-color: #93504B;
 }
 
 .event-card.ministry-planned {
-    border-color: #4299e1;
+    border-color: #93504B;
 }
 
 .event-card.teen-service {
-    border-color: #ed8936;
+    border-color: #93504B;
 }
 
 .event-header {
@@ -132,10 +136,10 @@ header h1 {
 }
 
 .event-title {
-    font-family: 'Gravitas One', serif;
+    font-family: 'Lexend', sans-serif;
     font-size: 1.125rem;
-    font-weight: 400;
-    color: #1A2944;
+    font-weight: 600;
+    color: white;
     margin-bottom: 0.25rem;
 }
 
@@ -149,19 +153,19 @@ header h1 {
 }
 
 .event-badge.fun-event {
-    background: #9f7aea;
+    background: #93504B;
 }
 
 .event-badge.fundraising {
-    background: #48bb78;
+    background: #93504B;
 }
 
 .event-badge.ministry-planned {
-    background: #4299e1;
+    background: #93504B;
 }
 
 .event-badge.teen-service {
-    background: #ed8936;
+    background: #93504B;
 }
 
 .event-details {
@@ -174,21 +178,22 @@ header h1 {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #4a5568;
+    color: rgba(255, 255, 255, 0.85);
     font-size: 0.9rem;
 }
 
 .event-detail i {
     width: 16px;
-    color: #718096;
+    color: #93504B;
 }
 
 /* Calendar Section */
 .calendar-section {
-    background: white;
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     padding: 1rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     max-height: calc(100vh - 140px);
     overflow-y: auto;
     display: flex;
@@ -203,14 +208,14 @@ header h1 {
 }
 
 .calendar-header h2 {
-    font-family: 'Gravitas One', serif;
+    font-family: 'Lexend', sans-serif;
     font-size: 1.35rem;
-    font-weight: 400;
-    color: #1A2944;
+    font-weight: 600;
+    color: white;
 }
 
 .nav-btn {
-    background: #1A2944;
+    background: #93504B;
     color: white;
     border: none;
     width: 40px;
@@ -221,13 +226,13 @@ header h1 {
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(26, 41, 68, 0.3);
+    box-shadow: 0 2px 8px rgba(147, 80, 75, 0.4);
 }
 
 .nav-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(26, 41, 68, 0.4);
-    background: #243554;
+    box-shadow: 0 4px 12px rgba(147, 80, 75, 0.6);
+    background: #a65d57;
 }
 
 .nav-btn:active {
@@ -245,7 +250,7 @@ header h1 {
 .weekday {
     text-align: center;
     font-weight: 600;
-    color: #4a5568;
+    color: rgba(255, 255, 255, 0.7);
     padding: 0.3rem;
     font-size: 0.75rem;
 }
@@ -266,48 +271,48 @@ header h1 {
     font-weight: 500;
     transition: all 0.2s ease;
     position: relative;
-    color: #2d3748;
+    color: white;
     font-size: 0.85rem;
 }
 
 .day:hover {
-    background: #f7fafc;
+    background: rgba(255, 255, 255, 0.1);
     transform: scale(1.05);
 }
 
 .day.other-month {
-    color: #cbd5e1;
+    color: rgba(255, 255, 255, 0.3);
 }
 
 .day.today {
-    background: #1A2944;
+    background: #93504B;
     color: white;
     font-weight: 600;
 }
 
 /* Event indicators (colored rings) */
 .day.has-event {
-    box-shadow: inset 0 0 0 2px;
+    box-shadow: inset 0 0 0 2px #93504B;
 }
 
 .day.has-event.fun-event {
-    box-shadow: inset 0 0 0 2px #9f7aea;
+    box-shadow: inset 0 0 0 2px #93504B;
 }
 
 .day.has-event.fundraising {
-    box-shadow: inset 0 0 0 2px #48bb78;
+    box-shadow: inset 0 0 0 2px #93504B;
 }
 
 .day.has-event.ministry-planned {
-    box-shadow: inset 0 0 0 2px #4299e1;
+    box-shadow: inset 0 0 0 2px #93504B;
 }
 
 .day.has-event.teen-service {
-    box-shadow: inset 0 0 0 2px #ed8936;
+    box-shadow: inset 0 0 0 2px #93504B;
 }
 
 .day.has-event:hover {
-    background: rgba(0, 0, 0, 0.03);
+    background: rgba(147, 80, 75, 0.2);
 }
 
 /* Multiple events indicator */
@@ -327,15 +332,15 @@ header h1 {
 .legend {
     margin-top: 0.5rem;
     padding-top: 0.5rem;
-    border-top: 2px solid #e2e8f0;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .legend h3 {
-    font-family: 'Gravitas One', serif;
+    font-family: 'Lexend', sans-serif;
     font-size: 0.85rem;
-    font-weight: 400;
+    font-weight: 600;
     margin-bottom: 0.4rem;
-    color: #1A2944;
+    color: white;
 }
 
 .legend-items {
@@ -349,7 +354,7 @@ header h1 {
     align-items: center;
     gap: 0.35rem;
     font-size: 0.8rem;
-    color: #4a5568;
+    color: rgba(255, 255, 255, 0.85);
 }
 
 .legend-badge {
@@ -360,19 +365,19 @@ header h1 {
 }
 
 .legend-badge.fun-event {
-    border-color: #9f7aea;
+    border-color: #93504B;
 }
 
 .legend-badge.fundraising {
-    border-color: #48bb78;
+    border-color: #93504B;
 }
 
 .legend-badge.ministry-planned {
-    border-color: #4299e1;
+    border-color: #93504B;
 }
 
 .legend-badge.teen-service {
-    border-color: #ed8936;
+    border-color: #93504B;
 }
 
 /* Responsive Design */
