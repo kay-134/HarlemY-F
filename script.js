@@ -121,6 +121,8 @@ function parseGoogleCalendarEvent(gcalEvent, id) {
         daysCount = isAllDay ? daysDiff : Math.ceil(daysDiff) + 1;
     }
 
+    console.log(`Parsing event: ${gcalEvent.summary}, Start: ${start}, End: ${end}, IsAllDay: ${isAllDay}, DaysDiff: ${daysDiff}, IsMultiDay: ${isMultiDay}, DaysCount: ${daysCount}`);
+
     // Format time
     let time = 'All Day';
     if (!isAllDay) {
@@ -445,13 +447,20 @@ function renderEvents() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
+    console.log('Today\'s date:', today.toDateString());
+    console.log('Total events loaded:', events.length);
+
     const upcomingEvents = events
         .filter(event => {
             // Parse event date without timezone issues
             const [year, month, day] = event.date.split('-').map(Number);
             const eventDate = new Date(year, month - 1, day);
             eventDate.setHours(0, 0, 0, 0);
-            return eventDate >= today;
+
+            const isUpcoming = eventDate >= today;
+            console.log(`Event: ${event.title}, Date: ${event.date}, Is upcoming: ${isUpcoming}, Is multi-day: ${event.isMultiDay}`);
+
+            return isUpcoming;
         })
         .sort((a, b) => {
             // Parse dates for sorting without timezone issues
@@ -461,6 +470,8 @@ function renderEvents() {
             const dateB = new Date(yearB, monthB - 1, dayB);
             return dateA - dateB;
         });
+
+    console.log('Upcoming events count:', upcomingEvents.length);
 
     if (upcomingEvents.length === 0) {
         eventsList.innerHTML = '<p style="text-align: center; color: rgba(255, 255, 255, 0.7); padding: 2rem;">No upcoming events</p>';
