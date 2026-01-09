@@ -93,12 +93,31 @@ function parseGoogleCalendarEvent(gcalEvent, id) {
     const dateObj = new Date(start);
     const date = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
 
+    // Calculate if multi-day event
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const isMultiDay = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24)) > 1;
+
+    // Calculate number of days
+    let daysCount = 1;
+    if (isMultiDay) {
+        daysCount = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+    }
+
     // Format time
     let time = 'All Day';
     if (gcalEvent.start.dateTime) {
         const startTime = new Date(start);
         const endTime = new Date(end);
         time = `${formatTime(startTime)} - ${formatTime(endTime)}`;
+    }
+
+    // Format end date for multi-day events
+    let endDateStr = null;
+    if (isMultiDay) {
+        const endDateObj = new Date(endDate);
+        endDateObj.setDate(endDateObj.getDate() - 1); // Google Calendar end dates are exclusive
+        endDateStr = `${endDateObj.getFullYear()}-${String(endDateObj.getMonth() + 1).padStart(2, '0')}-${String(endDateObj.getDate()).padStart(2, '0')}`;
     }
 
     // Detect category from title and description
@@ -108,10 +127,14 @@ function parseGoogleCalendarEvent(gcalEvent, id) {
         id: id,
         title: gcalEvent.summary || 'Untitled Event',
         date: date,
+        endDate: endDateStr,
         time: time,
         location: gcalEvent.location || 'TBD',
+        description: gcalEvent.description || '',
         category: category.id,
-        categoryLabel: category.label
+        categoryLabel: category.label,
+        isMultiDay: isMultiDay,
+        daysCount: daysCount
     };
 }
 
@@ -167,37 +190,53 @@ function getSampleEvents() {
             id: 1,
             title: "Youth Game Night",
             date: "2026-01-15",
+            endDate: null,
             time: "6:00 PM - 9:00 PM",
             location: "Church Fellowship Hall",
+            description: "Join us for an evening of fun games, snacks, and fellowship!",
             category: "fun-event",
-            categoryLabel: "Fun Event"
+            categoryLabel: "Fun Event",
+            isMultiDay: false,
+            daysCount: 1
         },
         {
             id: 2,
             title: "Bake Sale Fundraiser",
             date: "2026-01-18",
+            endDate: null,
             time: "10:00 AM - 2:00 PM",
             location: "Church Courtyard",
+            description: "Help support our youth ministry by purchasing delicious baked goods!",
             category: "fundraising",
-            categoryLabel: "Fundraising"
+            categoryLabel: "Fundraising",
+            isMultiDay: false,
+            daysCount: 1
         },
         {
             id: 3,
             title: "Bible Study Session",
             date: "2026-01-22",
+            endDate: null,
             time: "7:00 PM - 8:30 PM",
             location: "Youth Center Room 3",
+            description: "Weekly Bible study exploring faith and community.",
             category: "ministry-planned",
-            categoryLabel: "Y&F Ministry"
+            categoryLabel: "Y&F Ministry",
+            isMultiDay: false,
+            daysCount: 1
         },
         {
             id: 4,
             title: "Community Service Day",
             date: "2026-01-25",
+            endDate: null,
             time: "9:00 AM - 3:00 PM",
             location: "Local Food Bank",
+            description: "Serve our community by volunteering at the local food bank.",
             category: "teen-service",
-            categoryLabel: "Teen Service"
+            categoryLabel: "Teen Service",
+            isMultiDay: false,
+            daysCount: 1
         }
     ];
 }
@@ -356,14 +395,28 @@ function createEventCard(event) {
     // Format date
     const eventDate = new Date(event.date);
     const dateOptions = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
-    const formattedDate = eventDate.toLocaleDateString('en-US', dateOptions);
+    let formattedDate = eventDate.toLocaleDateString('en-US', dateOptions);
+
+    // Add end date for multi-day events
+    if (event.isMultiDay && event.endDate) {
+        const endDate = new Date(event.endDate);
+        const endDateOptions = { month: 'short', day: 'numeric', year: 'numeric' };
+        formattedDate += ` - ${endDate.toLocaleDateString('en-US', endDateOptions)}`;
+    }
+
+    // Multi-day indicator
+    const multiDayBadge = event.isMultiDay ?
+        `<span class="multi-day-badge">${event.daysCount} days</span>` : '';
 
     card.innerHTML = `
         <div class="event-header">
             <div>
                 <div class="event-title">${event.title}</div>
             </div>
-            <span class="event-badge ${event.category}">${event.categoryLabel}</span>
+            <div class="event-badges">
+                ${multiDayBadge}
+                <span class="event-badge ${event.category}">${event.categoryLabel}</span>
+            </div>
         </div>
         <div class="event-details">
             <div class="event-detail">
@@ -381,13 +434,11 @@ function createEventCard(event) {
         </div>
     `;
 
-    // Add click event to navigate calendar to event date
+    // Add click event to open modal
     card.addEventListener('click', () => {
-        const eventDate = new Date(event.date);
-        currentMonth = eventDate.getMonth();
-        currentYear = eventDate.getFullYear();
-        renderCalendar();
+        openEventModal(event);
     });
+    card.style.cursor = 'pointer';
 
     return card;
 }
@@ -415,3 +466,117 @@ function formatDate(dateString) {
     const options = { weekday: 'short', month: 'short', day: 'numeric' };
     return date.toLocaleDateString('en-US', options);
 }
+
+// ============================================
+// MODAL FUNCTIONS
+// ============================================
+
+// Open Event Modal
+function openEventModal(event) {
+    const modal = document.getElementById('eventModal');
+    const modalBody = document.getElementById('modalBody');
+
+    // Format date
+    const eventDate = new Date(event.date);
+    const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+    let formattedDate = eventDate.toLocaleDateString('en-US', dateOptions);
+
+    // Add end date for multi-day events
+    if (event.isMultiDay && event.endDate) {
+        const endDate = new Date(event.endDate);
+        formattedDate += ` - ${endDate.toLocaleDateString('en-US', dateOptions)}`;
+    }
+
+    // Multi-day indicator
+    const multiDayBadge = event.isMultiDay ?
+        `<span class="multi-day-badge-large">${event.daysCount} Day Event</span>` : '';
+
+    // Format description with line breaks
+    const description = event.description ?
+        event.description.replace(/\n/g, '<br>') :
+        'No additional details available.';
+
+    modalBody.innerHTML = `
+        <div class="modal-event-header">
+            <h2 class="modal-event-title">${event.title}</h2>
+            <div class="modal-badges">
+                ${multiDayBadge}
+                <span class="event-badge ${event.category}">${event.categoryLabel}</span>
+            </div>
+        </div>
+        <div class="modal-event-details">
+            <div class="modal-detail-item">
+                <div class="modal-detail-icon">
+                    <i class="far fa-calendar"></i>
+                </div>
+                <div class="modal-detail-content">
+                    <div class="modal-detail-label">Date</div>
+                    <div class="modal-detail-value">${formattedDate}</div>
+                </div>
+            </div>
+            <div class="modal-detail-item">
+                <div class="modal-detail-icon">
+                    <i class="far fa-clock"></i>
+                </div>
+                <div class="modal-detail-content">
+                    <div class="modal-detail-label">Time</div>
+                    <div class="modal-detail-value">${event.time}</div>
+                </div>
+            </div>
+            <div class="modal-detail-item">
+                <div class="modal-detail-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="modal-detail-content">
+                    <div class="modal-detail-label">Location</div>
+                    <div class="modal-detail-value">${event.location}</div>
+                </div>
+            </div>
+            ${event.description ? `
+            <div class="modal-detail-item modal-description">
+                <div class="modal-detail-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="modal-detail-content">
+                    <div class="modal-detail-label">Details</div>
+                    <div class="modal-detail-value">${description}</div>
+                </div>
+            </div>
+            ` : ''}
+        </div>
+    `;
+
+    // Show modal
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+// Close Event Modal
+function closeEventModal() {
+    const modal = document.getElementById('eventModal');
+    modal.style.display = 'none';
+    document.body.style.overflow = ''; // Restore scrolling
+}
+
+// Setup modal event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('eventModal');
+    const closeBtn = document.getElementById('modalClose');
+
+    // Close on X button
+    closeBtn.addEventListener('click', closeEventModal);
+
+    // Close on background click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeEventModal();
+        }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+            closeEventModal();
+        }
+    });
+});
