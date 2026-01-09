@@ -30,6 +30,16 @@ a:visited {
     color: #93504B;
 }
 
+/* Ensure links in modal descriptions use accent color */
+.modal-detail-value a {
+    color: #93504B;
+}
+
+.modal-detail-value a:hover {
+    color: #a65d57;
+    text-decoration: underline;
+}
+
 .container {
     max-width: 1400px;
     margin: 0 auto;

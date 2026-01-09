@@ -88,25 +88,41 @@ async function fetchGoogleCalendarEvents() {
 function parseGoogleCalendarEvent(gcalEvent, id) {
     const start = gcalEvent.start.dateTime || gcalEvent.start.date;
     const end = gcalEvent.end.dateTime || gcalEvent.end.date;
+    const isAllDay = !gcalEvent.start.dateTime;
+
+    // For all-day events, parse dates without timezone conversion
+    let dateObj, startDate, endDate;
+    if (isAllDay) {
+        // Parse YYYY-MM-DD directly without timezone issues
+        const [startYear, startMonth, startDay] = start.split('-').map(Number);
+        dateObj = new Date(startYear, startMonth - 1, startDay);
+        startDate = new Date(startYear, startMonth - 1, startDay);
+
+        const [endYear, endMonth, endDay] = end.split('-').map(Number);
+        endDate = new Date(endYear, endMonth - 1, endDay);
+    } else {
+        // For timed events, use normal Date parsing
+        dateObj = new Date(start);
+        startDate = new Date(start);
+        endDate = new Date(end);
+    }
 
     // Extract date in YYYY-MM-DD format
-    const dateObj = new Date(start);
     const date = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
 
-    // Calculate if multi-day event
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const isMultiDay = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24)) > 1;
+    // Calculate if multi-day event (for all-day events, Google end date is exclusive)
+    const daysDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+    const isMultiDay = isAllDay ? daysDiff > 1 : daysDiff >= 1;
 
     // Calculate number of days
     let daysCount = 1;
     if (isMultiDay) {
-        daysCount = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+        daysCount = isAllDay ? daysDiff : Math.ceil(daysDiff) + 1;
     }
 
     // Format time
     let time = 'All Day';
-    if (gcalEvent.start.dateTime) {
+    if (!isAllDay) {
         const startTime = new Date(start);
         const endTime = new Date(end);
         time = `${formatTime(startTime)} - ${formatTime(endTime)}`;
@@ -115,9 +131,18 @@ function parseGoogleCalendarEvent(gcalEvent, id) {
     // Format end date for multi-day events
     let endDateStr = null;
     if (isMultiDay) {
-        const endDateObj = new Date(endDate);
-        endDateObj.setDate(endDateObj.getDate() - 1); // Google Calendar end dates are exclusive
-        endDateStr = `${endDateObj.getFullYear()}-${String(endDateObj.getMonth() + 1).padStart(2, '0')}-${String(endDateObj.getDate()).padStart(2, '0')}`;
+        const actualEndDate = new Date(endDate);
+        if (isAllDay) {
+            // Google Calendar end dates are exclusive for all-day events, so subtract 1 day
+            actualEndDate.setDate(actualEndDate.getDate() - 1);
+        }
+        endDateStr = `${actualEndDate.getFullYear()}-${String(actualEndDate.getMonth() + 1).padStart(2, '0')}-${String(actualEndDate.getDate()).padStart(2, '0')}`;
+    }
+
+    // Parse title - remove category prefix if present (e.g., "Y&F Ministry Event: Title" -> "Title")
+    let eventTitle = gcalEvent.summary || 'Untitled Event';
+    if (eventTitle.includes(': ')) {
+        eventTitle = eventTitle.split(': ').slice(1).join(': ');
     }
 
     // Detect category from title and description
@@ -125,7 +150,7 @@ function parseGoogleCalendarEvent(gcalEvent, id) {
 
     return {
         id: id,
-        title: gcalEvent.summary || 'Untitled Event',
+        title: eventTitle,
         date: date,
         endDate: endDateStr,
         time: time,
@@ -342,18 +367,14 @@ function createDayElement(dayNumber, isOtherMonth) {
 
     // Check for events on this day (including multi-day events)
     const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(dayNumber).padStart(2, '0')}`;
-    const currentDate = new Date(dateString);
 
     // Find all events that include this day
     const dayEvents = events.filter(event => {
-        const eventStart = new Date(event.date);
-
         if (event.isMultiDay && event.endDate) {
-            const eventEnd = new Date(event.endDate);
-            // Check if current date is within the event range
-            return currentDate >= eventStart && currentDate <= eventEnd;
+            // For multi-day events, check if dateString is within range
+            return dateString >= event.date && dateString <= event.endDate;
         } else {
-            // Single day event
+            // Single day event - direct string comparison
             return event.date === dateString;
         }
     });
@@ -426,15 +447,22 @@ function createEventCard(event) {
     card.id = `event-${event.id}`;
 
     // Format date
-    const eventDate = new Date(event.date);
-    const dateOptions = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
-    let formattedDate = eventDate.toLocaleDateString('en-US', dateOptions);
+    const [startYear, startMonth, startDay] = event.date.split('-').map(Number);
+    const eventDate = new Date(startYear, startMonth - 1, startDay);
 
-    // Add end date for multi-day events
+    let formattedDate;
     if (event.isMultiDay && event.endDate) {
-        const endDate = new Date(event.endDate);
-        const endDateOptions = { month: 'short', day: 'numeric', year: 'numeric' };
-        formattedDate += ` - ${endDate.toLocaleDateString('en-US', endDateOptions)}`;
+        // Use long format for multi-day events
+        const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+        formattedDate = eventDate.toLocaleDateString('en-US', dateOptions);
+
+        const [endYear, endMonth, endDay] = event.endDate.split('-').map(Number);
+        const endDate = new Date(endYear, endMonth - 1, endDay);
+        formattedDate += ` - ${endDate.toLocaleDateString('en-US', dateOptions)}`;
+    } else {
+        // Use short format for single-day events
+        const dateOptions = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+        formattedDate = eventDate.toLocaleDateString('en-US', dateOptions);
     }
 
     // Multi-day indicator
@@ -509,14 +537,16 @@ function openEventModal(event) {
     const modal = document.getElementById('eventModal');
     const modalBody = document.getElementById('modalBody');
 
-    // Format date
-    const eventDate = new Date(event.date);
+    // Format date (parse without timezone issues)
+    const [startYear, startMonth, startDay] = event.date.split('-').map(Number);
+    const eventDate = new Date(startYear, startMonth - 1, startDay);
     const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
     let formattedDate = eventDate.toLocaleDateString('en-US', dateOptions);
 
     // Add end date for multi-day events
     if (event.isMultiDay && event.endDate) {
-        const endDate = new Date(event.endDate);
+        const [endYear, endMonth, endDay] = event.endDate.split('-').map(Number);
+        const endDate = new Date(endYear, endMonth - 1, endDay);
         formattedDate += ` - ${endDate.toLocaleDateString('en-US', dateOptions)}`;
     }
 
