@@ -257,7 +257,7 @@ header h1 {
 }
 
 .day {
-    aspect-ratio: 0.7;
+    aspect-ratio: 1.4;
     display: flex;
     align-items: center;
     justify-content: center;
