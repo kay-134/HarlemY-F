@@ -111,14 +111,33 @@ function parseGoogleCalendarEvent(gcalEvent, id) {
     // Extract date in YYYY-MM-DD format
     const date = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
 
-    // Calculate if multi-day event (for all-day events, Google end date is exclusive)
+    // Calculate if multi-day event
     const daysDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
-    const isMultiDay = isAllDay ? daysDiff > 1 : daysDiff >= 1;
+
+    let isMultiDay;
+    if (isAllDay) {
+        // For all-day events, Google end date is exclusive, so > 1 day means multi-day
+        isMultiDay = daysDiff > 1;
+    } else {
+        // For timed events, check if event crosses midnight OR if it ends on a different calendar day
+        const startCalendarDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+        const endCalendarDay = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+        const crossesMidnight = startCalendarDay.getTime() !== endCalendarDay.getTime();
+
+        isMultiDay = crossesMidnight || daysDiff >= 1;
+    }
 
     // Calculate number of days
     let daysCount = 1;
     if (isMultiDay) {
-        daysCount = isAllDay ? daysDiff : Math.ceil(daysDiff) + 1;
+        if (isAllDay) {
+            daysCount = daysDiff;
+        } else {
+            // For timed events, count the number of calendar days spanned
+            const startDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+            const endDay = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+            daysCount = Math.round((endDay - startDay) / (1000 * 60 * 60 * 24)) + 1;
+        }
     }
 
     console.log(`Parsing event: ${gcalEvent.summary}, Start: ${start}, End: ${end}, IsAllDay: ${isAllDay}, DaysDiff: ${daysDiff}, IsMultiDay: ${isMultiDay}, DaysCount: ${daysCount}`);
