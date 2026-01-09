@@ -441,13 +441,26 @@ function renderEvents() {
     const eventsList = document.getElementById('eventsList');
     eventsList.innerHTML = '';
 
-    // Filter and sort upcoming events
+    // Filter and sort upcoming events (include today)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     const upcomingEvents = events
-        .filter(event => new Date(event.date) >= today)
-        .sort((a, b) => new Date(a.date) - new Date(b.date));
+        .filter(event => {
+            // Parse event date without timezone issues
+            const [year, month, day] = event.date.split('-').map(Number);
+            const eventDate = new Date(year, month - 1, day);
+            eventDate.setHours(0, 0, 0, 0);
+            return eventDate >= today;
+        })
+        .sort((a, b) => {
+            // Parse dates for sorting without timezone issues
+            const [yearA, monthA, dayA] = a.date.split('-').map(Number);
+            const [yearB, monthB, dayB] = b.date.split('-').map(Number);
+            const dateA = new Date(yearA, monthA - 1, dayA);
+            const dateB = new Date(yearB, monthB - 1, dayB);
+            return dateA - dateB;
+        });
 
     if (upcomingEvents.length === 0) {
         eventsList.innerHTML = '<p style="text-align: center; color: rgba(255, 255, 255, 0.7); padding: 2rem;">No upcoming events</p>';
