@@ -68,7 +68,7 @@ header h1 {
 /* Main Content Layout */
 .content {
     display: grid;
-    grid-template-columns: 340px 1fr;
+    grid-template-columns: 450px 1fr;
     gap: 2rem;
     align-items: start;
     max-height: calc(100vh - 140px);
@@ -88,7 +88,7 @@ header h1 {
 
 .events-section h2 {
     font-family: 'Lexend', sans-serif;
-    font-size: 1.35rem;
+    font-size: 1.75rem;
     font-weight: 600;
     margin-bottom: 1.25rem;
     color: white;
@@ -123,8 +123,8 @@ header h1 {
 .event-card {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
-    padding: 1rem;
-    margin-bottom: 0.85rem;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
     border: 2px solid;
     transition: all 0.3s ease;
     cursor: pointer;
@@ -167,16 +167,16 @@ header h1 {
 
 .event-title {
     font-family: 'Lexend', sans-serif;
-    font-size: 1rem;
+    font-size: 1.25rem;
     font-weight: 600;
     color: white;
     margin-bottom: 0.25rem;
 }
 
 .event-badge {
-    padding: 0.25rem 0.65rem;
+    padding: 0.25rem 0.75rem;
     border-radius: 20px;
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     font-weight: 500;
     color: white;
     white-space: nowrap;
@@ -213,7 +213,7 @@ header h1 {
     align-items: center;
     gap: 0.5rem;
     color: rgba(255, 255, 255, 0.85);
-    font-size: 0.8rem;
+    font-size: 0.95rem;
 }
 
 .event-detail i {
