@@ -328,6 +328,70 @@ header h1 {
     border-radius: 50%;
 }
 
+/* Multi-day event styling */
+.day.multi-day-start,
+.day.multi-day-middle,
+.day.multi-day-end {
+    position: relative;
+    background: rgba(147, 80, 75, 0.15);
+}
+
+.day.multi-day-start {
+    border-radius: 50% 0 0 50%;
+}
+
+.day.multi-day-end {
+    border-radius: 0 50% 50% 0;
+}
+
+.day.multi-day-middle {
+    border-radius: 0;
+}
+
+/* Add connecting background for multi-day events */
+.day.multi-day-start::before,
+.day.multi-day-middle::before,
+.day.multi-day-end::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(147, 80, 75, 0.15);
+    z-index: -1;
+}
+
+.day.multi-day-start::before {
+    left: 50%;
+}
+
+.day.multi-day-end::before {
+    right: 50%;
+}
+
+/* Border styling for multi-day events */
+.day.multi-day-start,
+.day.multi-day-middle,
+.day.multi-day-end {
+    box-shadow: inset 0 2px 0 0 #93504B, inset 0 -2px 0 0 #93504B;
+}
+
+.day.multi-day-start {
+    box-shadow: inset 0 2px 0 0 #93504B, inset 0 -2px 0 0 #93504B, inset 2px 0 0 0 #93504B;
+}
+
+.day.multi-day-end {
+    box-shadow: inset 0 2px 0 0 #93504B, inset 0 -2px 0 0 #93504B, inset -2px 0 0 0 #93504B;
+}
+
+.day.multi-day-start:hover,
+.day.multi-day-middle:hover,
+.day.multi-day-end:hover {
+    background: rgba(147, 80, 75, 0.25);
+    transform: scale(1.05);
+}
+
 /* Legend */
 .legend {
     margin-top: 0.5rem;

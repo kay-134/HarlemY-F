@@ -340,22 +340,55 @@ function createDayElement(dayNumber, isOtherMonth) {
         dayDiv.classList.add('today');
     }
 
-    // Check for events on this day
+    // Check for events on this day (including multi-day events)
     const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(dayNumber).padStart(2, '0')}`;
-    const dayEvents = events.filter(event => event.date === dateString);
+    const currentDate = new Date(dateString);
+
+    // Find all events that include this day
+    const dayEvents = events.filter(event => {
+        const eventStart = new Date(event.date);
+
+        if (event.isMultiDay && event.endDate) {
+            const eventEnd = new Date(event.endDate);
+            // Check if current date is within the event range
+            return currentDate >= eventStart && currentDate <= eventEnd;
+        } else {
+            // Single day event
+            return event.date === dateString;
+        }
+    });
 
     if (dayEvents.length > 0) {
         dayDiv.classList.add('has-event');
-        // Add category class for the first event (for ring color)
-        dayDiv.classList.add(dayEvents[0].category);
+
+        // Check if this is a multi-day event and add position classes
+        dayEvents.forEach((event, index) => {
+            if (event.isMultiDay && event.endDate) {
+                const eventStart = new Date(event.date);
+                const eventEnd = new Date(event.endDate);
+
+                if (dateString === event.date) {
+                    dayDiv.classList.add('multi-day-start');
+                } else if (dateString === event.endDate) {
+                    dayDiv.classList.add('multi-day-end');
+                } else {
+                    dayDiv.classList.add('multi-day-middle');
+                }
+            }
+
+            // Add category class for the first event (for color)
+            if (index === 0) {
+                dayDiv.classList.add(event.category);
+            }
+        });
 
         if (dayEvents.length > 1) {
             dayDiv.classList.add('has-multiple-events');
         }
 
-        // Add click event to scroll to event
+        // Add click event to open modal for first event
         dayDiv.addEventListener('click', () => {
-            scrollToEvent(dayEvents[0].id);
+            openEventModal(dayEvents[0]);
         });
     }
 
