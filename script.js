@@ -17,6 +17,7 @@ const GOOGLE_CALENDAR_CONFIG = {
 // Category detection keywords
 // Events are categorized based on keywords in the title or description
 const CATEGORY_KEYWORDS = {
+    'birthday': ['birthday', 'bday', 'b-day'],
     'fun-event': ['game', 'movie', 'bowling', 'fun', 'night', 'party', 'social'],
     'fundraising': ['fundraiser', 'bake sale', 'car wash', 'donation', 'fundraising'],
     'ministry-planned': ['bible', 'study', 'worship', 'ministry', 'prayer', 'devotion', 'retreat planning'],
@@ -148,18 +149,36 @@ function parseGoogleCalendarEvent(gcalEvent, id) {
     // Detect category from title and description
     const category = detectCategory(gcalEvent.summary, gcalEvent.description || '');
 
+    // Special handling for birthday events
+    let location = gcalEvent.location || 'TBD';
+    let description = gcalEvent.description || '';
+    let isBirthday = category.id === 'birthday';
+
+    if (isBirthday) {
+        // Extract person's name from title (e.g., "John's Birthday" -> "John")
+        let personName = eventTitle;
+        if (eventTitle.toLowerCase().includes('birthday')) {
+            personName = eventTitle.replace(/['']s?\s*(birthday|bday|b-day)/gi, '').trim();
+        }
+
+        // Set birthday-specific properties
+        location = ''; // Hide location for birthdays
+        description = `Don't forget to text ${personName} Happy Birthday!`;
+    }
+
     return {
         id: id,
         title: eventTitle,
         date: date,
         endDate: endDateStr,
         time: time,
-        location: gcalEvent.location || 'TBD',
-        description: gcalEvent.description || '',
+        location: location,
+        description: description,
         category: category.id,
         categoryLabel: category.label,
         isMultiDay: isMultiDay,
-        daysCount: daysCount
+        daysCount: daysCount,
+        isBirthday: isBirthday
     };
 }
 
@@ -189,6 +208,7 @@ function detectCategory(title, description) {
 // Get category label from ID
 function getCategoryLabel(categoryId) {
     const labels = {
+        'birthday': 'Birthday',
         'fun-event': 'Fun Event',
         'fundraising': 'Fundraising',
         'ministry-planned': 'Y&F Ministry',
@@ -488,10 +508,12 @@ function createEventCard(event) {
                 <i class="far fa-clock"></i>
                 <span>${event.time}</span>
             </div>
+            ${!event.isBirthday && event.location ? `
             <div class="event-detail">
                 <i class="fas fa-map-marker-alt"></i>
                 <span>${event.location}</span>
             </div>
+            ` : ''}
         </div>
     `;
 
@@ -586,6 +608,7 @@ function openEventModal(event) {
                     <div class="modal-detail-value">${event.time}</div>
                 </div>
             </div>
+            ${!event.isBirthday && event.location ? `
             <div class="modal-detail-item">
                 <div class="modal-detail-icon">
                     <i class="fas fa-map-marker-alt"></i>
@@ -595,6 +618,7 @@ function openEventModal(event) {
                     <div class="modal-detail-value">${event.location}</div>
                 </div>
             </div>
+            ` : ''}
             ${event.description ? `
             <div class="modal-detail-item modal-description">
                 <div class="modal-detail-icon">

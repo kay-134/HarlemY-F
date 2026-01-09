@@ -138,6 +138,10 @@ header h1 {
 }
 
 /* Category-specific border colors */
+.event-card.birthday {
+    border-color: #93504B;
+}
+
 .event-card.fun-event {
     border-color: #93504B;
 }
@@ -176,6 +180,10 @@ header h1 {
     font-weight: 500;
     color: white;
     white-space: nowrap;
+}
+
+.event-badge.birthday {
+    background: #93504B;
 }
 
 .event-badge.fun-event {
@@ -321,6 +329,10 @@ header h1 {
     box-shadow: inset 0 0 0 2px #93504B;
 }
 
+.day.has-event.birthday {
+    box-shadow: inset 0 0 0 2px #93504B;
+}
+
 .day.has-event.fun-event {
     box-shadow: inset 0 0 0 2px #93504B;
 }
@@ -396,19 +408,19 @@ header h1 {
     right: 50%;
 }
 
-/* Border styling for multi-day events */
+/* Border styling for multi-day events - includes circle on all days */
 .day.multi-day-start,
 .day.multi-day-middle,
 .day.multi-day-end {
-    box-shadow: inset 0 2px 0 0 #93504B, inset 0 -2px 0 0 #93504B;
+    box-shadow: inset 0 0 0 2px #93504B, inset 0 2px 0 0 #93504B, inset 0 -2px 0 0 #93504B;
 }
 
 .day.multi-day-start {
-    box-shadow: inset 0 2px 0 0 #93504B, inset 0 -2px 0 0 #93504B, inset 2px 0 0 0 #93504B;
+    box-shadow: inset 0 0 0 2px #93504B, inset 0 2px 0 0 #93504B, inset 0 -2px 0 0 #93504B, inset 2px 0 0 0 #93504B;
 }
 
 .day.multi-day-end {
-    box-shadow: inset 0 2px 0 0 #93504B, inset 0 -2px 0 0 #93504B, inset -2px 0 0 0 #93504B;
+    box-shadow: inset 0 0 0 2px #93504B, inset 0 2px 0 0 #93504B, inset 0 -2px 0 0 #93504B, inset -2px 0 0 0 #93504B;
 }
 
 .day.multi-day-start:hover,
