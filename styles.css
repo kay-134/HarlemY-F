@@ -6,9 +6,8 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4facfe 100%);
-    background-attachment: fixed;
+    font-family: 'Funnel Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: white;
     color: #2d3748;
     line-height: 1.6;
     min-height: 100vh;
@@ -24,14 +23,14 @@ body {
 header {
     text-align: center;
     margin-bottom: 2rem;
-    color: white;
+    color: #1A2944;
 }
 
 header h1 {
+    font-family: 'Gravitas One', serif;
     font-size: 2.5rem;
-    font-weight: 600;
+    font-weight: 400;
     margin-bottom: 0.5rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .subtitle {
@@ -56,10 +55,11 @@ header h1 {
 }
 
 .events-section h2 {
+    font-family: 'Gravitas One', serif;
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 400;
     margin-bottom: 1.5rem;
-    color: #1a202c;
+    color: #1A2944;
 }
 
 .events-list {
@@ -128,9 +128,10 @@ header h1 {
 }
 
 .event-title {
+    font-family: 'Gravitas One', serif;
     font-size: 1.125rem;
-    font-weight: 600;
-    color: #1a202c;
+    font-weight: 400;
+    color: #1A2944;
     margin-bottom: 0.25rem;
 }
 
@@ -194,13 +195,14 @@ header h1 {
 }
 
 .calendar-header h2 {
+    font-family: 'Gravitas One', serif;
     font-size: 1.75rem;
-    font-weight: 600;
-    color: #1a202c;
+    font-weight: 400;
+    color: #1A2944;
 }
 
 .nav-btn {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: #1A2944;
     color: white;
     border: none;
     width: 40px;
@@ -211,12 +213,13 @@ header h1 {
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 2px 8px rgba(26, 41, 68, 0.3);
 }
 
 .nav-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 12px rgba(26, 41, 68, 0.4);
+    background: #243554;
 }
 
 .nav-btn:active {
@@ -268,7 +271,7 @@ header h1 {
 }
 
 .day.today {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: #1A2944;
     color: white;
     font-weight: 600;
 }
@@ -319,10 +322,11 @@ header h1 {
 }
 
 .legend h3 {
+    font-family: 'Gravitas One', serif;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 400;
     margin-bottom: 1rem;
-    color: #2d3748;
+    color: #1A2944;
 }
 
 .legend-items {
