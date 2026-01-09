@@ -38,10 +38,11 @@ Each event displays:
 
 ```
 HarlemY-F/
-├── index.html      # Main HTML structure
-├── styles.css      # All styling and responsive design
-├── script.js       # Calendar generation and interactivity
-└── README.md       # Project documentation
+├── index.html                  # Main HTML structure
+├── styles.css                  # All styling and responsive design
+├── script.js                   # Calendar logic and Google Calendar API integration
+├── README.md                   # Project documentation
+└── GOOGLE_CALENDAR_SETUP.md   # Step-by-step Google Calendar setup guide
 ```
 
 ## Live Demo
@@ -67,10 +68,20 @@ The deployment workflow is already configured in `.github/workflows/deploy.yml` 
 
 Simply open `index.html` in any modern web browser. No build process or dependencies required beyond the Font Awesome CDN for icons.
 
+## Google Calendar Integration
+
+This calendar can automatically pull events from a public Google Calendar! See **[GOOGLE_CALENDAR_SETUP.md](GOOGLE_CALENDAR_SETUP.md)** for detailed setup instructions.
+
+### Quick Start:
+1. Get a Google Calendar API key
+2. Make your calendar public
+3. Update the configuration in `script.js`
+4. Events will automatically sync!
+
 ## Customization
 
-### Adding Events
-Edit the `events` array in `script.js`:
+### Manual Event Entry (Alternative to Google Calendar)
+If you prefer not to use Google Calendar, you can manually edit the `getSampleEvents()` function in `script.js`:
 
 ```javascript
 {

@@ -1,122 +1,215 @@
-// Sample Events Data
-const events = [
-    {
-        id: 1,
-        title: "Youth Game Night",
-        date: "2026-01-15",
-        time: "6:00 PM - 9:00 PM",
-        location: "Church Fellowship Hall",
-        category: "fun-event",
-        categoryLabel: "Fun Event"
-    },
-    {
-        id: 2,
-        title: "Bake Sale Fundraiser",
-        date: "2026-01-18",
-        time: "10:00 AM - 2:00 PM",
-        location: "Church Courtyard",
-        category: "fundraising",
-        categoryLabel: "Fundraising"
-    },
-    {
-        id: 3,
-        title: "Bible Study Session",
-        date: "2026-01-22",
-        time: "7:00 PM - 8:30 PM",
-        location: "Youth Center Room 3",
-        category: "ministry-planned",
-        categoryLabel: "Y&F Ministry"
-    },
-    {
-        id: 4,
-        title: "Community Service Day",
-        date: "2026-01-25",
-        time: "9:00 AM - 3:00 PM",
-        location: "Local Food Bank",
-        category: "teen-service",
-        categoryLabel: "Teen Service"
-    },
-    {
-        id: 5,
-        title: "Movie Night",
-        date: "2026-01-29",
-        time: "7:00 PM - 10:00 PM",
-        location: "Church Auditorium",
-        category: "fun-event",
-        categoryLabel: "Fun Event"
-    },
-    {
-        id: 6,
-        title: "Car Wash Fundraiser",
-        date: "2026-02-01",
-        time: "11:00 AM - 4:00 PM",
-        location: "Church Parking Lot",
-        category: "fundraising",
-        categoryLabel: "Fundraising"
-    },
-    {
-        id: 7,
-        title: "Youth Worship Night",
-        date: "2026-02-05",
-        time: "6:30 PM - 8:30 PM",
-        location: "Main Sanctuary",
-        category: "ministry-planned",
-        categoryLabel: "Y&F Ministry"
-    },
-    {
-        id: 8,
-        title: "Bowling Tournament",
-        date: "2026-02-08",
-        time: "5:00 PM - 8:00 PM",
-        location: "Sunset Bowling Alley",
-        category: "fun-event",
-        categoryLabel: "Fun Event"
-    },
-    {
-        id: 9,
-        title: "Homeless Shelter Volunteering",
-        date: "2026-02-12",
-        time: "10:00 AM - 2:00 PM",
-        location: "Downtown Shelter",
-        category: "teen-service",
-        categoryLabel: "Teen Service"
-    },
-    {
-        id: 10,
-        title: "Valentine's Day Banquet",
-        date: "2026-02-14",
-        time: "6:00 PM - 9:00 PM",
-        location: "Church Fellowship Hall",
-        category: "fun-event",
-        categoryLabel: "Fun Event"
-    },
-    {
-        id: 11,
-        title: "Youth Retreat Planning",
-        date: "2026-02-19",
-        time: "7:00 PM - 8:30 PM",
-        location: "Youth Center",
-        category: "ministry-planned",
-        categoryLabel: "Y&F Ministry"
-    },
-    {
-        id: 12,
-        title: "Pancake Breakfast Fundraiser",
-        date: "2026-02-22",
-        time: "8:00 AM - 11:00 AM",
-        location: "Church Kitchen",
-        category: "fundraising",
-        categoryLabel: "Fundraising"
-    }
-];
+// ============================================
+// GOOGLE CALENDAR CONFIGURATION
+// ============================================
+// To set up Google Calendar integration:
+// 1. Get your API key from: https://console.cloud.google.com/apis/credentials
+// 2. Enable the Google Calendar API in your Google Cloud project
+// 3. Make your Google Calendar public (Calendar Settings > Access permissions)
+// 4. Get your Calendar ID from Calendar Settings > Integrate calendar
+// 5. Replace the values below with your API key and Calendar ID
+
+const GOOGLE_CALENDAR_CONFIG = {
+    apiKey: 'YOUR_API_KEY_HERE',  // Replace with your Google Calendar API key
+    calendarId: 'YOUR_CALENDAR_ID_HERE',  // Replace with your calendar ID (usually ends with @group.calendar.google.com)
+    enabled: false  // Set to true once you've added your API key and calendar ID
+};
+
+// Category detection keywords
+// Events are categorized based on keywords in the title or description
+const CATEGORY_KEYWORDS = {
+    'fun-event': ['game', 'movie', 'bowling', 'fun', 'night', 'party', 'social'],
+    'fundraising': ['fundraiser', 'bake sale', 'car wash', 'donation', 'fundraising'],
+    'ministry-planned': ['bible', 'study', 'worship', 'ministry', 'prayer', 'devotion', 'retreat planning'],
+    'teen-service': ['service', 'volunteer', 'community', 'outreach', 'mission', 'help']
+};
+
+// Store events globally
+let events = [];
 
 // Calendar State
 let currentDate = new Date();
 let currentMonth = currentDate.getMonth();
 let currentYear = currentDate.getFullYear();
 
+// ============================================
+// GOOGLE CALENDAR API FUNCTIONS
+// ============================================
+
+// Fetch events from Google Calendar
+async function fetchGoogleCalendarEvents() {
+    if (!GOOGLE_CALENDAR_CONFIG.enabled) {
+        console.log('Google Calendar integration is disabled. Using sample data.');
+        return getSampleEvents();
+    }
+
+    const now = new Date();
+    const threeMonthsLater = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000);
+
+    const params = new URLSearchParams({
+        key: GOOGLE_CALENDAR_CONFIG.apiKey,
+        timeMin: now.toISOString(),
+        timeMax: threeMonthsLater.toISOString(),
+        singleEvents: true,
+        orderBy: 'startTime',
+        maxResults: 50
+    });
+
+    const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(GOOGLE_CALENDAR_CONFIG.calendarId)}/events?${params}`;
+
+    try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            console.error('Failed to fetch from Google Calendar:', response.statusText);
+            return getSampleEvents();
+        }
+
+        const data = await response.json();
+
+        if (!data.items || data.items.length === 0) {
+            console.log('No events found in Google Calendar.');
+            return [];
+        }
+
+        return data.items.map((event, index) => parseGoogleCalendarEvent(event, index + 1));
+    } catch (error) {
+        console.error('Error fetching Google Calendar events:', error);
+        return getSampleEvents();
+    }
+}
+
+// Parse a Google Calendar event into our format
+function parseGoogleCalendarEvent(gcalEvent, id) {
+    const start = gcalEvent.start.dateTime || gcalEvent.start.date;
+    const end = gcalEvent.end.dateTime || gcalEvent.end.date;
+
+    // Extract date in YYYY-MM-DD format
+    const dateObj = new Date(start);
+    const date = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+
+    // Format time
+    let time = 'All Day';
+    if (gcalEvent.start.dateTime) {
+        const startTime = new Date(start);
+        const endTime = new Date(end);
+        time = `${formatTime(startTime)} - ${formatTime(endTime)}`;
+    }
+
+    // Detect category from title and description
+    const category = detectCategory(gcalEvent.summary, gcalEvent.description || '');
+
+    return {
+        id: id,
+        title: gcalEvent.summary || 'Untitled Event',
+        date: date,
+        time: time,
+        location: gcalEvent.location || 'TBD',
+        category: category.id,
+        categoryLabel: category.label
+    };
+}
+
+// Detect event category based on keywords
+function detectCategory(title, description) {
+    const searchText = `${title} ${description}`.toLowerCase();
+
+    // Check each category's keywords
+    for (const [categoryId, keywords] of Object.entries(CATEGORY_KEYWORDS)) {
+        for (const keyword of keywords) {
+            if (searchText.includes(keyword.toLowerCase())) {
+                return {
+                    id: categoryId,
+                    label: getCategoryLabel(categoryId)
+                };
+            }
+        }
+    }
+
+    // Default to fun-event if no match
+    return {
+        id: 'fun-event',
+        label: 'Fun Event'
+    };
+}
+
+// Get category label from ID
+function getCategoryLabel(categoryId) {
+    const labels = {
+        'fun-event': 'Fun Event',
+        'fundraising': 'Fundraising',
+        'ministry-planned': 'Y&F Ministry',
+        'teen-service': 'Teen Service'
+    };
+    return labels[categoryId] || 'Event';
+}
+
+// Format time to 12-hour format
+function formatTime(date) {
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+    return `${hours}:${minutesStr} ${ampm}`;
+}
+
+// Sample events fallback
+function getSampleEvents() {
+    return [
+        {
+            id: 1,
+            title: "Youth Game Night",
+            date: "2026-01-15",
+            time: "6:00 PM - 9:00 PM",
+            location: "Church Fellowship Hall",
+            category: "fun-event",
+            categoryLabel: "Fun Event"
+        },
+        {
+            id: 2,
+            title: "Bake Sale Fundraiser",
+            date: "2026-01-18",
+            time: "10:00 AM - 2:00 PM",
+            location: "Church Courtyard",
+            category: "fundraising",
+            categoryLabel: "Fundraising"
+        },
+        {
+            id: 3,
+            title: "Bible Study Session",
+            date: "2026-01-22",
+            time: "7:00 PM - 8:30 PM",
+            location: "Youth Center Room 3",
+            category: "ministry-planned",
+            categoryLabel: "Y&F Ministry"
+        },
+        {
+            id: 4,
+            title: "Community Service Day",
+            date: "2026-01-25",
+            time: "9:00 AM - 3:00 PM",
+            location: "Local Food Bank",
+            category: "teen-service",
+            categoryLabel: "Teen Service"
+        }
+    ];
+}
+
+// ============================================
+// INITIALIZATION
+// ============================================
+
 // Initialize
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Show loading state
+    const eventsList = document.getElementById('eventsList');
+    eventsList.innerHTML = '<p style="text-align: center; color: rgba(255, 255, 255, 0.7); padding: 2rem;">Loading events...</p>';
+
+    // Fetch events from Google Calendar or use sample data
+    events = await fetchGoogleCalendarEvents();
+
+    // Render calendar and events
     renderCalendar();
     renderEvents();
     setupEventListeners();
@@ -238,7 +331,7 @@ function renderEvents() {
         .sort((a, b) => new Date(a.date) - new Date(b.date));
 
     if (upcomingEvents.length === 0) {
-        eventsList.innerHTML = '<p style="text-align: center; color: #718096; padding: 2rem;">No upcoming events</p>';
+        eventsList.innerHTML = '<p style="text-align: center; color: rgba(255, 255, 255, 0.7); padding: 2rem;">No upcoming events</p>';
         return;
     }
 
