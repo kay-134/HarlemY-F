@@ -60,7 +60,13 @@ async function fetchGoogleCalendarEvents() {
         const response = await fetch(url);
 
         if (!response.ok) {
-            console.error('Failed to fetch from Google Calendar:', response.statusText);
+            // Get detailed error information
+            const errorData = await response.json().catch(() => ({}));
+            console.error('Failed to fetch from Google Calendar:', {
+                status: response.status,
+                statusText: response.statusText,
+                error: errorData
+            });
             return getSampleEvents();
         }
 
