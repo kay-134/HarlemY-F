@@ -44,7 +44,26 @@ HarlemY-F/
 └── README.md       # Project documentation
 ```
 
-## Usage
+## Live Demo
+
+This site is configured for GitHub Pages deployment. Once enabled, it will be available at:
+`https://[username].github.io/HarlemY-F/`
+
+### Setting Up GitHub Pages
+
+To enable GitHub Pages for this repository:
+
+1. Go to your repository on GitHub
+2. Click **Settings** (in the repository menu)
+3. Click **Pages** (in the left sidebar under "Code and automation")
+4. Under **Build and deployment**:
+   - Source: Select **GitHub Actions**
+5. The site will automatically deploy when you push changes to the `claude/youth-events-calendar-oHn95` or `main` branch
+6. Once deployed, GitHub will show your live site URL
+
+The deployment workflow is already configured in `.github/workflows/deploy.yml` and will run automatically.
+
+## Local Usage
 
 Simply open `index.html` in any modern web browser. No build process or dependencies required beyond the Font Awesome CDN for icons.
 
