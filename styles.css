@@ -54,13 +54,13 @@ header {
 
 header h1 {
     font-family: 'Lexend', sans-serif;
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
 }
 
 .subtitle {
-    font-size: 1rem;
+    font-size: 1.5rem;
     opacity: 0.9;
     color: rgba(255, 255, 255, 0.9);
 }
@@ -88,7 +88,7 @@ header h1 {
 
 .events-section h2 {
     font-family: 'Lexend', sans-serif;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
     color: white;
@@ -167,7 +167,7 @@ header h1 {
 
 .event-title {
     font-family: 'Lexend', sans-serif;
-    font-size: 1.125rem;
+    font-size: 1.5rem;
     font-weight: 600;
     color: white;
     margin-bottom: 0.25rem;
@@ -176,7 +176,7 @@ header h1 {
 .event-badge {
     padding: 0.25rem 0.75rem;
     border-radius: 20px;
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-weight: 500;
     color: white;
     white-space: nowrap;
@@ -213,7 +213,7 @@ header h1 {
     align-items: center;
     gap: 0.5rem;
     color: rgba(255, 255, 255, 0.85);
-    font-size: 0.9rem;
+    font-size: 1.5rem;
 }
 
 .event-detail i {
@@ -243,7 +243,7 @@ header h1 {
 
 .calendar-header h2 {
     font-family: 'Lexend', sans-serif;
-    font-size: 1.35rem;
+    font-size: 1.6rem;
     font-weight: 600;
     color: white;
 }
@@ -439,7 +439,7 @@ header h1 {
 
 .legend h3 {
     font-family: 'Lexend', sans-serif;
-    font-size: 0.85rem;
+    font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 0.4rem;
     color: white;
