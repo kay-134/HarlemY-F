@@ -11,7 +11,7 @@
 const GOOGLE_CALENDAR_CONFIG = {
     apiKey: 'AIzaSyDSTY2czR2Arg1Y_cfFiQ0DANCCY2kaq5o',  // Replace with your Google Calendar API key
     calendarId: 'c_a96a34b6a713662e7c6aa2869774de611fefe4f16ffabc05cf973e16edb93afa@group.calendar.google.com',  // Replace with your calendar ID (usually ends with @group.calendar.google.com)
-    enabled: false  // Set to true once you've added your API key and calendar ID
+    enabled: true  // Set to true once you've added your API key and calendar ID
 };
 
 // Category detection keywords
