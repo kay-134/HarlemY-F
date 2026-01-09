@@ -33,10 +33,37 @@ Once configured, your calendar will:
 2. Click "**+ CREATE CREDENTIALS**" at the top
 3. Select "**API key**"
 4. Copy the API key that appears (you'll need this later)
-5. Click "**Restrict Key**" (recommended for security)
-   - Under "API restrictions", select "Restrict key"
-   - Choose "Google Calendar API" from the dropdown
-   - Click "Save"
+
+**Important: Restrict Your API Key (Recommended for Security)**
+
+5. Click "**Restrict Key**" (or "Edit API key" if the dialog closed)
+6. Give your key a name like "Youth Calendar API Key"
+
+**Option A - Application Restrictions (Recommended):**
+7. Under "Application restrictions":
+   - Select "**HTTP referrers (web sites)**"
+   - Click "**ADD AN ITEM**"
+   - Add your website URL: `https://YOUR-USERNAME.github.io/HarlemY-F/*`
+   - Replace `YOUR-USERNAME` with your actual GitHub username
+   - The `/*` at the end allows all pages on your site
+
+**Option B - API Restrictions:**
+8. Under "API restrictions":
+   - Select "**Restrict key**"
+   - Click the dropdown menu
+   - **If you don't see "Google Calendar API":**
+     - Make sure you completed Step 2 (Enable Google Calendar API)
+     - Refresh the page and try again
+     - Look for "Calendar API" or similar names
+     - If still not visible, you can skip API restrictions for now and use HTTP referrer restrictions (Option A) instead
+   - If you see it, check "**Google Calendar API**"
+
+9. Click "**Save**"
+
+**Note:** If you can't find Google Calendar API in the list:
+- HTTP referrer restrictions (Option A) alone provide good security
+- The API restriction will become available after the Calendar API is fully enabled (may take a few minutes)
+- You can always come back and add API restrictions later
 
 ### Step 4: Make Your Calendar Public
 
@@ -146,6 +173,39 @@ The event will automatically appear on your website within a few minutes!
 
 ## Troubleshooting
 
+### Can't find Google Calendar API in restrictions dropdown
+
+This is a common issue! Here's what to do:
+
+1. **Make sure the API is enabled first:**
+   - Go to **APIs & Services** > **Library**
+   - Search for "Google Calendar API"
+   - Make sure it shows "Enabled" (not "Enable")
+   - If it says "Enable", click it and wait a few minutes
+
+2. **Try refreshing the credentials page:**
+   - After enabling the API, wait 2-3 minutes
+   - Refresh your browser
+   - Go back to edit your API key
+   - Check the dropdown again
+
+3. **Use HTTP referrer restrictions instead:**
+   - This is actually MORE secure for websites
+   - Under "Application restrictions", choose "HTTP referrers"
+   - Add: `https://YOUR-USERNAME.github.io/HarlemY-F/*`
+   - This limits the key to only work on your website
+
+4. **Alternative names to look for:**
+   - "Calendar API"
+   - "Google Calendar API v3"
+   - Sometimes it appears without "Google" prefix
+
+5. **If all else fails:**
+   - Use HTTP referrer restrictions (step 3 above)
+   - Skip API restrictions for now
+   - Your key will still work, just be careful not to share it publicly
+   - You can add API restrictions later once it appears
+
 ### Events aren't showing up
 
 1. **Check configuration:**
@@ -164,10 +224,12 @@ The event will automatically appear on your website within a few minutes!
      - `API key not valid` - Double-check your API key
      - `404 Not Found` - Calendar ID might be wrong
      - `403 Forbidden` - Calendar might not be public
+     - `The API is not enabled` - Go enable it in Google Cloud Console
 
 4. **Check API restrictions:**
    - In Google Cloud Console, verify the API key restrictions
    - Make sure Google Calendar API is enabled
+   - If using HTTP referrer restrictions, make sure your domain is listed correctly
 
 ### Events are in the wrong category
 
