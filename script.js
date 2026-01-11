@@ -558,11 +558,17 @@ function createEventCard(event) {
             </div>
             ` : ''}
         </div>
+        <button class="add-to-calendar-btn" onclick="event.stopPropagation(); downloadICS(${event.id})">
+            <i class="fas fa-download"></i>
+            Add to Calendar
+        </button>
     `;
 
-    // Add click event to open modal
-    card.addEventListener('click', () => {
-        openEventModal(event);
+    // Add click event to open modal (only on card body, not button)
+    card.addEventListener('click', (e) => {
+        if (!e.target.closest('.add-to-calendar-btn')) {
+            openEventModal(event);
+        }
     });
     card.style.cursor = 'pointer';
 
@@ -709,4 +715,170 @@ document.addEventListener('DOMContentLoaded', () => {
             closeEventModal();
         }
     });
+
+    // Subscribe button
+    const subscribeBtn = document.getElementById('subscribeBtn');
+    if (subscribeBtn) {
+        subscribeBtn.addEventListener('click', showSubscribeInstructions);
+    }
 });
+
+// ============================================
+// CALENDAR SUBSCRIPTION FUNCTIONS
+// ============================================
+
+// Download ICS file for individual event
+function downloadICS(eventId) {
+    const event = events.find(e => e.id === eventId);
+    if (!event) return;
+
+    // Parse dates
+    const [year, month, day] = event.date.split('-').map(Number);
+    let startDate, endDate;
+
+    if (event.time === 'All Day') {
+        // All-day event
+        startDate = `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}`;
+
+        if (event.endDate) {
+            const [endYear, endMonth, endDay] = event.endDate.split('-').map(Number);
+            // Add 1 day for exclusive end date in ICS format
+            const endDateObj = new Date(endYear, endMonth - 1, endDay);
+            endDateObj.setDate(endDateObj.getDate() + 1);
+            endDate = `${endDateObj.getFullYear()}${String(endDateObj.getMonth() + 1).padStart(2, '0')}${String(endDateObj.getDate()).padStart(2, '0')}`;
+        } else {
+            // Single day event - end is next day
+            const nextDay = new Date(year, month - 1, day);
+            nextDay.setDate(nextDay.setDate() + 1);
+            endDate = `${nextDay.getFullYear()}${String(nextDay.getMonth() + 1).padStart(2, '0')}${String(nextDay.getDate()).padStart(2, '0')}`;
+        }
+    } else {
+        // Timed event - need to parse time
+        const timeMatch = event.time.match(/(\d+):(\d+)\s*(AM|PM)/);
+        if (timeMatch) {
+            let hours = parseInt(timeMatch[1]);
+            const minutes = parseInt(timeMatch[2]);
+            const ampm = timeMatch[3];
+
+            if (ampm === 'PM' && hours !== 12) hours += 12;
+            if (ampm === 'AM' && hours === 12) hours = 0;
+
+            startDate = `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}T${String(hours).padStart(2, '0')}${String(minutes).padStart(2, '0')}00`;
+        }
+
+        // For timed events, calculate end time (default 2 hours if not specified)
+        const endTimeMatch = event.time.match(/- (\d+):(\d+)\s*(AM|PM)/);
+        if (endTimeMatch) {
+            let endHours = parseInt(endTimeMatch[1]);
+            const endMinutes = parseInt(endTimeMatch[2]);
+            const endAmpm = endTimeMatch[3];
+
+            if (endAmpm === 'PM' && endHours !== 12) endHours += 12;
+            if (endAmpm === 'AM' && endHours === 12) endHours = 0;
+
+            let endYear = year, endMonth = month, endDay = day;
+            if (event.endDate) {
+                [endYear, endMonth, endDay] = event.endDate.split('-').map(Number);
+            }
+
+            endDate = `${endYear}${String(endMonth).padStart(2, '0')}${String(endDay).padStart(2, '0')}T${String(endHours).padStart(2, '0')}${String(endMinutes).padStart(2, '0')}00`;
+        } else {
+            endDate = startDate; // Fallback
+        }
+    }
+
+    // Create ICS content
+    const ics = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Harlem Youth Ministry//Events Calendar//EN
+BEGIN:VEVENT
+UID:${event.id}@harlemyouth.com
+DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+DTSTART${event.time === 'All Day' ? ';VALUE=DATE' : ''}:${startDate}
+DTEND${event.time === 'All Day' ? ';VALUE=DATE' : ''}:${endDate}
+SUMMARY:${event.title}
+DESCRIPTION:${event.description.replace(/\n/g, '\\n')}
+LOCATION:${event.location || ''}
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR`;
+
+    // Download the file
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${event.title.replace(/[^a-z0-9]/gi, '_')}.ics`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// Show calendar subscription instructions
+function showSubscribeInstructions() {
+    const calendarUrl = `https://calendar.google.com/calendar/u/0?cid=${GOOGLE_CALENDAR_CONFIG.calendarId}`;
+
+    const modal = document.getElementById('eventModal');
+    const modalBody = document.getElementById('modalBody');
+
+    modalBody.innerHTML = `
+        <div class="modal-event-header">
+            <h2 class="modal-event-title">Subscribe to Calendar</h2>
+        </div>
+        <div class="modal-event-details">
+            <div class="modal-detail-item">
+                <div class="modal-detail-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="modal-detail-content">
+                    <div class="modal-detail-label">For iPhone/iPad</div>
+                    <div class="modal-detail-value">
+                        1. Open the link below in Safari<br>
+                        2. Tap "Subscribe" when prompted<br>
+                        3. The calendar will sync automatically with updates!
+                    </div>
+                </div>
+            </div>
+            <div class="modal-detail-item">
+                <div class="modal-detail-icon">
+                    <i class="fab fa-android"></i>
+                </div>
+                <div class="modal-detail-content">
+                    <div class="modal-detail-label">For Android/Samsung</div>
+                    <div class="modal-detail-value">
+                        1. Open the link below in Chrome<br>
+                        2. Sign in with your Google account<br>
+                        3. Click "Add to Calendar"<br>
+                        4. Events will appear in your Google Calendar app!
+                    </div>
+                </div>
+            </div>
+            <div class="modal-detail-item">
+                <div class="modal-detail-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <div class="modal-detail-content">
+                    <div class="modal-detail-label">Calendar Link</div>
+                    <div class="modal-detail-value">
+                        <a href="${calendarUrl}" target="_blank" style="word-break: break-all; color: #93504B; text-decoration: underline;">
+                            Click here to subscribe
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-detail-item modal-description">
+                <div class="modal-detail-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="modal-detail-content">
+                    <div class="modal-detail-label">Why Subscribe?</div>
+                    <div class="modal-detail-value">
+                        When you subscribe to the calendar, new events and updates will automatically appear on your phone! You won't need to manually add each event.
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
