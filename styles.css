@@ -268,11 +268,19 @@ header h1 {
     gap: 0.5rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     line-height: 1;
+    text-align: center;
 }
 
 .subscribe-btn i {
     display: flex;
     align-items: center;
+    line-height: 1;
+}
+
+.subscribe-btn span {
+    display: flex;
+    align-items: center;
+    line-height: 1;
 }
 
 /* Add spacing above subscribe button */
@@ -397,7 +405,8 @@ header h1 {
 }
 
 .day.has-event.birthday {
-    box-shadow: inset 0 0 0 2px #93504B;
+    border: 2px dotted #93504B;
+    box-shadow: none;
 }
 
 .day.has-event.fun-event {
@@ -914,19 +923,19 @@ body.light-mode header {
 }
 
 body.light-mode .theme-toggle {
-    background: rgba(26, 41, 68, 0.1);
-    border-color: rgba(26, 41, 68, 0.2);
-    color: #1a2944;
+    background: rgba(95, 52, 47, 0.1);
+    border-color: rgba(95, 52, 47, 0.2);
+    color: #5F342F;
 }
 
 body.light-mode .theme-toggle:hover {
-    background: rgba(26, 41, 68, 0.2);
+    background: rgba(95, 52, 47, 0.2);
 }
 
 /* Events Section - Light Mode */
 body.light-mode .events-section {
     background: #f5f5f5;
-    border-color: rgba(26, 41, 68, 0.1);
+    border-color: rgba(95, 52, 47, 0.1);
 }
 
 body.light-mode .events-section h2 {
@@ -936,7 +945,7 @@ body.light-mode .events-section h2 {
 body.light-mode .event-card {
     background: white;
     color: #1a2944;
-    border-color: #FF6B35;
+    border-color: #93504B;
 }
 
 body.light-mode .event-title {
@@ -948,31 +957,31 @@ body.light-mode .event-detail {
 }
 
 body.light-mode .event-detail i {
-    color: #FF6B35;
+    color: #93504B;
 }
 
 body.light-mode .event-badge {
-    background: #4A90E2;
+    background: #93504B;
     color: white;
 }
 
 body.light-mode .subscribe-btn {
-    background: #FF6B35;
+    background: #93504B;
     color: white;
 }
 
 body.light-mode .subscribe-btn:hover {
-    background: #e55a28;
+    background: #7a433e;
 }
 
 body.light-mode .events-section .subscribe-btn {
-    border-top-color: rgba(26, 41, 68, 0.1);
+    border-top-color: rgba(95, 52, 47, 0.1);
 }
 
 /* Calendar Section - Light Mode */
 body.light-mode .calendar-section {
     background: #f5f5f5;
-    border-color: rgba(26, 41, 68, 0.1);
+    border-color: rgba(95, 52, 47, 0.1);
 }
 
 body.light-mode .calendar-header h2 {
@@ -988,7 +997,7 @@ body.light-mode .day {
 }
 
 body.light-mode .day:hover {
-    background: rgba(74, 144, 226, 0.1);
+    background: rgba(147, 80, 75, 0.1);
 }
 
 body.light-mode .day.other-month {
@@ -996,16 +1005,21 @@ body.light-mode .day.other-month {
 }
 
 body.light-mode .day.today {
-    background: #4A90E2;
+    background: #93504B;
     color: white;
 }
 
 body.light-mode .day.has-event {
-    box-shadow: inset 0 0 0 2px #FF6B35;
+    box-shadow: inset 0 0 0 2px #93504B;
+}
+
+body.light-mode .day.has-event.birthday {
+    border: 2px dotted #93504B;
+    box-shadow: none;
 }
 
 body.light-mode .day.has-event:hover {
-    background: rgba(255, 107, 53, 0.1);
+    background: rgba(147, 80, 75, 0.1);
 }
 
 body.light-mode .day.past-event {
@@ -1014,39 +1028,39 @@ body.light-mode .day.past-event {
 
 body.light-mode .day.past-event:hover {
     opacity: 0.7;
-    background: rgba(255, 107, 53, 0.1);
+    background: rgba(147, 80, 75, 0.1);
 }
 
 body.light-mode .nav-btn {
-    background: #4A90E2;
+    background: #93504B;
     color: white;
-    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+    box-shadow: 0 2px 8px rgba(147, 80, 75, 0.3);
 }
 
 body.light-mode .nav-btn:hover {
-    background: #357ABD;
-    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
+    background: #7a433e;
+    box-shadow: 0 4px 12px rgba(147, 80, 75, 0.4);
 }
 
 body.light-mode .day.multi-day-start,
 body.light-mode .day.multi-day-middle,
 body.light-mode .day.multi-day-end {
-    background: rgba(255, 107, 53, 0.1);
-    box-shadow: inset 0 0 0 2px #FF6B35, inset 0 2px 0 0 #FF6B35, inset 0 -2px 0 0 #FF6B35;
+    background: rgba(147, 80, 75, 0.1);
+    box-shadow: inset 0 0 0 2px #93504B, inset 0 2px 0 0 #93504B, inset 0 -2px 0 0 #93504B;
 }
 
 body.light-mode .day.multi-day-start {
-    box-shadow: inset 0 0 0 2px #FF6B35, inset 0 2px 0 0 #FF6B35, inset 0 -2px 0 0 #FF6B35, inset 2px 0 0 0 #FF6B35;
+    box-shadow: inset 0 0 0 2px #93504B, inset 0 2px 0 0 #93504B, inset 0 -2px 0 0 #93504B, inset 2px 0 0 0 #93504B;
 }
 
 body.light-mode .day.multi-day-end {
-    box-shadow: inset 0 0 0 2px #FF6B35, inset 0 2px 0 0 #FF6B35, inset 0 -2px 0 0 #FF6B35, inset -2px 0 0 0 #FF6B35;
+    box-shadow: inset 0 0 0 2px #93504B, inset 0 2px 0 0 #93504B, inset 0 -2px 0 0 #93504B, inset -2px 0 0 0 #93504B;
 }
 
 body.light-mode .day.multi-day-start:hover,
 body.light-mode .day.multi-day-middle:hover,
 body.light-mode .day.multi-day-end:hover {
-    background: rgba(255, 107, 53, 0.2);
+    background: rgba(147, 80, 75, 0.2);
 }
 
 /* Modal - Light Mode */
@@ -1056,7 +1070,7 @@ body.light-mode .modal {
 
 body.light-mode .modal-content {
     background: white;
-    border-color: rgba(26, 41, 68, 0.1);
+    border-color: rgba(95, 52, 47, 0.1);
 }
 
 body.light-mode .modal-event-title {
@@ -1076,61 +1090,61 @@ body.light-mode .modal-description .modal-detail-value {
 }
 
 body.light-mode .modal-detail-icon {
-    background: rgba(255, 107, 53, 0.1);
-    color: #FF6B35;
+    background: rgba(147, 80, 75, 0.1);
+    color: #93504B;
 }
 
 body.light-mode .modal-close {
-    background: rgba(26, 41, 68, 0.1);
-    color: #1a2944;
+    background: rgba(95, 52, 47, 0.1);
+    color: #5F342F;
 }
 
 body.light-mode .modal-close:hover {
-    background: #FF6B35;
+    background: #93504B;
     color: white;
 }
 
 body.light-mode a {
-    color: #4A90E2;
+    color: #93504B;
 }
 
 body.light-mode a:hover {
-    color: #357ABD;
+    color: #7a433e;
 }
 
 body.light-mode a:visited {
-    color: #4A90E2;
+    color: #93504B;
 }
 
 body.light-mode .modal-detail-value a {
-    color: #4A90E2;
+    color: #93504B;
 }
 
 body.light-mode .modal-detail-value a:hover {
-    color: #357ABD;
+    color: #7a433e;
 }
 
 /* Scrollbar - Light Mode */
 body.light-mode .events-list::-webkit-scrollbar-track {
-    background: rgba(26, 41, 68, 0.05);
+    background: rgba(147, 80, 75, 0.05);
 }
 
 body.light-mode .events-list::-webkit-scrollbar-thumb {
-    background: #4A90E2;
+    background: #93504B;
 }
 
 body.light-mode .events-list::-webkit-scrollbar-thumb:hover {
-    background: #357ABD;
+    background: #7a433e;
 }
 
 body.light-mode .modal-content::-webkit-scrollbar-track {
-    background: rgba(26, 41, 68, 0.05);
+    background: rgba(147, 80, 75, 0.05);
 }
 
 body.light-mode .modal-content::-webkit-scrollbar-thumb {
-    background: #4A90E2;
+    background: #93504B;
 }
 
 body.light-mode .modal-content::-webkit-scrollbar-thumb:hover {
-    background: #357ABD;
+    background: #7a433e;
 }
