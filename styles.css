@@ -527,16 +527,18 @@ header h1 {
 
     .events-section {
         order: 1;
-        max-height: 400px;
+        height: auto;
+        max-height: 45vh;
     }
 
     .calendar-section {
         order: 2;
-        max-height: none;
+        height: auto;
+        max-height: 45vh;
     }
 
     .events-list {
-        max-height: 280px;
+        max-height: calc(45vh - 180px);
     }
 }
 
