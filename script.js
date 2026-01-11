@@ -883,3 +883,58 @@ function showSubscribeInstructions() {
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 }
+
+// ============================================
+// THEME TOGGLE FUNCTIONS
+// ============================================
+
+// Initialize theme on page load
+function initTheme() {
+    // Check if user has a saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    const themeToggle = document.getElementById('themeToggle');
+
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+        updateThemeIcon(true);
+    } else {
+        // Default to dark mode
+        updateThemeIcon(false);
+    }
+
+    // Add click event to toggle button
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+}
+
+// Toggle between light and dark mode
+function toggleTheme() {
+    const isLightMode = document.body.classList.toggle('light-mode');
+    updateThemeIcon(isLightMode);
+
+    // Save preference
+    localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+}
+
+// Update theme icon based on current mode
+function updateThemeIcon(isLightMode) {
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) return;
+
+    const icon = themeToggle.querySelector('i');
+    if (icon) {
+        if (isLightMode) {
+            // Show moon icon when in light mode
+            icon.className = 'fas fa-moon';
+        } else {
+            // Show sun icon when in dark mode
+            icon.className = 'fas fa-sun';
+        }
+    }
+}
+
+// Initialize theme when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+});
