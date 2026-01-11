@@ -893,6 +893,8 @@ function initTheme() {
     // Check if user has a saved theme preference
     const savedTheme = localStorage.getItem('theme');
     const themeToggle = document.getElementById('themeToggle');
+    const themeToggleMobile = document.getElementById('themeToggleMobile');
+    const subscribeBtnMobile = document.getElementById('subscribeBtnMobile');
 
     if (savedTheme === 'light') {
         document.body.classList.add('light-mode');
@@ -902,9 +904,17 @@ function initTheme() {
         updateThemeIcon(false);
     }
 
-    // Add click event to toggle button
+    // Add click event to toggle buttons
     if (themeToggle) {
         themeToggle.addEventListener('click', toggleTheme);
+    }
+    if (themeToggleMobile) {
+        themeToggleMobile.addEventListener('click', toggleTheme);
+    }
+
+    // Add click event to mobile subscribe button
+    if (subscribeBtnMobile) {
+        subscribeBtnMobile.addEventListener('click', showSubscribeInstructions);
     }
 }
 
@@ -920,16 +930,23 @@ function toggleTheme() {
 // Update theme icon based on current mode
 function updateThemeIcon(isLightMode) {
     const themeToggle = document.getElementById('themeToggle');
-    if (!themeToggle) return;
+    const themeToggleMobile = document.getElementById('themeToggleMobile');
 
-    const icon = themeToggle.querySelector('i');
-    if (icon) {
-        if (isLightMode) {
-            // Show moon icon when in light mode
-            icon.className = 'fas fa-moon';
-        } else {
-            // Show sun icon when in dark mode
-            icon.className = 'fas fa-sun';
+    const iconClass = isLightMode ? 'fas fa-moon' : 'fas fa-sun';
+
+    // Update desktop icon
+    if (themeToggle) {
+        const icon = themeToggle.querySelector('i');
+        if (icon) {
+            icon.className = iconClass;
+        }
+    }
+
+    // Update mobile icon
+    if (themeToggleMobile) {
+        const icon = themeToggleMobile.querySelector('i');
+        if (icon) {
+            icon.className = iconClass;
         }
     }
 }
@@ -937,4 +954,22 @@ function updateThemeIcon(isLightMode) {
 // Initialize theme when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
+    updateHeadingForMobile();
 });
+
+// Update heading text based on screen size
+function updateHeadingForMobile() {
+    const heading = document.querySelector('header h1');
+    if (!heading) return;
+
+    function checkScreenSize() {
+        if (window.innerWidth <= 1024) {
+            heading.textContent = 'Harlem Y&F Events';
+        } else {
+            heading.textContent = 'Harlem Youth Ministry Events';
+        }
+    }
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+}

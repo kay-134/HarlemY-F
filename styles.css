@@ -86,6 +86,71 @@ header h1 {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
+/* Mobile Button Row - Hidden on desktop */
+.mobile-button-row {
+    display: none;
+}
+
+.theme-toggle-mobile {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+}
+
+.theme-toggle-mobile:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.subscribe-btn-mobile {
+    padding: 0.6rem 0.75rem;
+    background: #93504B;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Lexend', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    line-height: 1;
+    text-align: center;
+    flex: 1;
+}
+
+.subscribe-btn-mobile:hover {
+    background: #a65d57;
+    transform: translateY(-2px);
+}
+
+.subscribe-btn-mobile i {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+}
+
+.subscribe-btn-mobile span {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+}
+
 .subtitle {
     font-size: 1.5rem;
     opacity: 0.9;
@@ -570,6 +635,34 @@ header h1 {
 
 /* Responsive Design */
 @media (max-width: 1024px) {
+    /* Hide desktop theme toggle on mobile */
+    .theme-toggle {
+        display: none;
+    }
+
+    header {
+        margin-bottom: 0.75rem;
+        position: static;
+    }
+
+    header h1 {
+        font-size: 1.75rem;
+        margin-bottom: 0;
+    }
+
+    /* Show mobile button row */
+    .mobile-button-row {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        align-items: center;
+    }
+
+    /* Hide subscribe button from events section on mobile */
+    .events-section .subscribe-btn {
+        display: none;
+    }
+
     .content {
         grid-template-columns: 1fr;
         max-height: none;
@@ -590,15 +683,6 @@ header h1 {
 
     .events-list {
         max-height: calc(45vh - 180px);
-    }
-
-    header h1 {
-        font-size: 1.75rem;
-    }
-
-    .subscribe-btn {
-        padding: 0.6rem 0.75rem;
-        font-size: 0.875rem;
     }
 }
 
@@ -930,6 +1014,25 @@ body.light-mode .theme-toggle {
 
 body.light-mode .theme-toggle:hover {
     background: rgba(95, 52, 47, 0.2);
+}
+
+body.light-mode .theme-toggle-mobile {
+    background: rgba(95, 52, 47, 0.1);
+    border-color: rgba(95, 52, 47, 0.2);
+    color: #5F342F;
+}
+
+body.light-mode .theme-toggle-mobile:hover {
+    background: rgba(95, 52, 47, 0.2);
+}
+
+body.light-mode .subscribe-btn-mobile {
+    background: #93504B;
+    color: white;
+}
+
+body.light-mode .subscribe-btn-mobile:hover {
+    background: #7a433e;
 }
 
 /* Events Section - Light Mode */
