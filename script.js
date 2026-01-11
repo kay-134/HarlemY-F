@@ -44,15 +44,16 @@ async function fetchGoogleCalendarEvents() {
     }
 
     const now = new Date();
-    const threeMonthsLater = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000);
+    const threeMonthsAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+    const sixMonthsLater = new Date(now.getTime() + 180 * 24 * 60 * 60 * 1000);
 
     const params = new URLSearchParams({
         key: GOOGLE_CALENDAR_CONFIG.apiKey,
-        timeMin: now.toISOString(),
-        timeMax: threeMonthsLater.toISOString(),
+        timeMin: threeMonthsAgo.toISOString(),
+        timeMax: sixMonthsLater.toISOString(),
         singleEvents: true,
         orderBy: 'startTime',
-        maxResults: 50
+        maxResults: 100
     });
 
     const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(GOOGLE_CALENDAR_CONFIG.calendarId)}/events?${params}`;
@@ -406,7 +407,7 @@ function createDayElement(dayNumber, isOtherMonth) {
         dayDiv.classList.add('today');
     }
 
-    // Check for events on this day (including multi-day events)
+    // Check for events on this day (including multi-day events and past events)
     const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(dayNumber).padStart(2, '0')}`;
 
     // Find all events that include this day
@@ -422,6 +423,17 @@ function createDayElement(dayNumber, isOtherMonth) {
 
     if (dayEvents.length > 0) {
         dayDiv.classList.add('has-event');
+
+        // Check if event is in the past
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const [eventYear, eventMonth, eventDay] = dateString.split('-').map(Number);
+        const eventDateObj = new Date(eventYear, eventMonth - 1, eventDay);
+        eventDateObj.setHours(0, 0, 0, 0);
+
+        if (eventDateObj < today) {
+            dayDiv.classList.add('past-event');
+        }
 
         // Check if this is a multi-day event and add position classes
         dayEvents.forEach((event, index) => {
@@ -560,7 +572,7 @@ function createEventCard(event) {
         </div>
         <button class="add-to-calendar-btn" onclick="event.stopPropagation(); downloadICS(${event.id})">
             <i class="fas fa-download"></i>
-            Add to Calendar
+            Download Event
         </button>
     `;
 
@@ -872,7 +884,10 @@ function showSubscribeInstructions() {
                 <div class="modal-detail-content">
                     <div class="modal-detail-label">Why Subscribe?</div>
                     <div class="modal-detail-value">
-                        When you subscribe to the calendar, new events and updates will automatically appear on your phone! You won't need to manually add each event.
+                        <strong>Subscribe once, get automatic updates forever!</strong><br><br>
+                        When you subscribe, ALL current and future events automatically sync to your phone's calendar.
+                        If we add new events or make changes, they update automatically - no need to download anything again!<br><br>
+                        <em>Note: The "Download Event" button on each event only downloads that single event and won't update if we make changes.</em>
                     </div>
                 </div>
             </div>

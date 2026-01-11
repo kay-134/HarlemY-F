@@ -404,6 +404,16 @@ header h1 {
     background: rgba(147, 80, 75, 0.2);
 }
 
+/* Past events - greyed out but still visible and clickable */
+.day.past-event {
+    opacity: 0.5;
+}
+
+.day.past-event:hover {
+    opacity: 0.7;
+    background: rgba(147, 80, 75, 0.15);
+}
+
 /* Multiple events indicator */
 .day.has-multiple-events::after {
     content: '';
