@@ -570,17 +570,11 @@ function createEventCard(event) {
             </div>
             ` : ''}
         </div>
-        <button class="add-to-calendar-btn" onclick="event.stopPropagation(); downloadICS(${event.id})">
-            <i class="fas fa-download"></i>
-            Download Event
-        </button>
     `;
 
-    // Add click event to open modal (only on card body, not button)
-    card.addEventListener('click', (e) => {
-        if (!e.target.closest('.add-to-calendar-btn')) {
-            openEventModal(event);
-        }
+    // Add click event to open modal
+    card.addEventListener('click', () => {
+        openEventModal(event);
     });
     card.style.cursor = 'pointer';
 
@@ -827,7 +821,8 @@ END:VCALENDAR`;
 
 // Show calendar subscription instructions
 function showSubscribeInstructions() {
-    const calendarUrl = `https://calendar.google.com/calendar/u/0?cid=${GOOGLE_CALENDAR_CONFIG.calendarId}`;
+    const appleCalendarUrl = 'https://calendar.google.com/calendar/ical/c_a96a34b6a713662e7c6aa2869774de611fefe4f16ffabc05cf973e16edb93afa%40group.calendar.google.com/public/basic.ics';
+    const googleCalendarUrl = `https://calendar.google.com/calendar/u/0?cid=${GOOGLE_CALENDAR_CONFIG.calendarId}`;
 
     const modal = document.getElementById('eventModal');
     const modalBody = document.getElementById('modalBody');
@@ -844,9 +839,12 @@ function showSubscribeInstructions() {
                 <div class="modal-detail-content">
                     <div class="modal-detail-label">For iPhone/iPad</div>
                     <div class="modal-detail-value">
-                        1. Open the link below in Safari<br>
-                        2. Tap "Subscribe" when prompted<br>
-                        3. The calendar will sync automatically with updates!
+                        <strong>Click the link below:</strong><br>
+                        <a href="${appleCalendarUrl}" target="_blank" style="word-break: break-all; color: #93504B; text-decoration: underline; font-weight: 600;">
+                            Tap here to subscribe on iPhone/iPad
+                        </a><br><br>
+                        When prompted, tap "Subscribe" to add the calendar.<br>
+                        All events will sync automatically with updates!
                     </div>
                 </div>
             </div>
@@ -857,23 +855,12 @@ function showSubscribeInstructions() {
                 <div class="modal-detail-content">
                     <div class="modal-detail-label">For Android/Samsung</div>
                     <div class="modal-detail-value">
-                        1. Open the link below in Chrome<br>
-                        2. Sign in with your Google account<br>
-                        3. Click "Add to Calendar"<br>
-                        4. Events will appear in your Google Calendar app!
-                    </div>
-                </div>
-            </div>
-            <div class="modal-detail-item">
-                <div class="modal-detail-icon">
-                    <i class="fas fa-link"></i>
-                </div>
-                <div class="modal-detail-content">
-                    <div class="modal-detail-label">Calendar Link</div>
-                    <div class="modal-detail-value">
-                        <a href="${calendarUrl}" target="_blank" style="word-break: break-all; color: #93504B; text-decoration: underline;">
-                            Click here to subscribe
-                        </a>
+                        <strong>Click the link below:</strong><br>
+                        <a href="${googleCalendarUrl}" target="_blank" style="word-break: break-all; color: #93504B; text-decoration: underline; font-weight: 600;">
+                            Tap here to subscribe on Android
+                        </a><br><br>
+                        Sign in with your Google account and click "Add to Calendar".<br>
+                        Events will appear in your Google Calendar app!
                     </div>
                 </div>
             </div>
@@ -886,8 +873,7 @@ function showSubscribeInstructions() {
                     <div class="modal-detail-value">
                         <strong>Subscribe once, get automatic updates forever!</strong><br><br>
                         When you subscribe, ALL current and future events automatically sync to your phone's calendar.
-                        If we add new events or make changes, they update automatically - no need to download anything again!<br><br>
-                        <em>Note: The "Download Event" button on each event only downloads that single event and won't update if we make changes.</em>
+                        If we add new events or make changes, they update automatically!
                     </div>
                 </div>
             </div>

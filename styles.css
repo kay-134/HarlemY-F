@@ -247,31 +247,6 @@ header h1 {
     box-shadow: 0 4px 12px rgba(147, 80, 75, 0.4);
 }
 
-.add-to-calendar-btn {
-    margin-top: 0.75rem;
-    padding: 0.5rem 1rem;
-    background: rgba(147, 80, 75, 0.2);
-    color: #93504B;
-    border: 1px solid #93504B;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: 'Lexend', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    width: 100%;
-}
-
-.add-to-calendar-btn:hover {
-    background: #93504B;
-    color: white;
-    transform: translateY(-1px);
-}
-
 /* Calendar Section */
 .calendar-section {
     background: rgba(255, 255, 255, 0.08);
