@@ -124,13 +124,13 @@ header h1 {
     font-size: 0.875rem;
     font-weight: 500;
     transition: all 0.3s ease;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     line-height: 1;
-    text-align: center;
+    vertical-align: middle;
     flex: 1;
 }
 
@@ -140,15 +140,19 @@ header h1 {
 }
 
 .subscribe-btn-mobile i {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     line-height: 1;
+    height: 1em;
 }
 
 .subscribe-btn-mobile span {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     line-height: 1;
+    height: 1em;
 }
 
 .subtitle {
@@ -325,12 +329,16 @@ header h1 {
     gap: 0.5rem;
     align-items: center;
     justify-content: center;
+    flex-direction: row;
 }
 
 .scroll-prompt i {
     color: #93504B;
     font-size: 0.75rem;
-    margin-right: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 /* Subscribe and Add to Calendar Buttons */
@@ -347,25 +355,29 @@ header h1 {
     font-size: 0.95rem;
     font-weight: 500;
     transition: all 0.3s ease;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     line-height: 1;
-    text-align: center;
+    vertical-align: middle;
 }
 
 .subscribe-btn i {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     line-height: 1;
+    height: 1em;
 }
 
 .subscribe-btn span {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     line-height: 1;
+    height: 1em;
 }
 
 /* Add spacing above subscribe button */
