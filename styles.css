@@ -313,6 +313,26 @@ header h1 {
     color: #93504B;
 }
 
+/* Scroll Prompt - Hidden on desktop */
+.scroll-prompt {
+    display: none;
+    text-align: center;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+    font-weight: 400;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.scroll-prompt i {
+    color: #93504B;
+    font-size: 0.75rem;
+    margin-right: 0.5rem;
+}
+
 /* Subscribe and Add to Calendar Buttons */
 .subscribe-btn {
     margin-top: auto;
@@ -656,6 +676,11 @@ header h1 {
         gap: 0.75rem;
         margin-bottom: 1rem;
         align-items: center;
+    }
+
+    /* Show scroll prompt on mobile */
+    .scroll-prompt {
+        display: flex;
     }
 
     /* Hide subscribe button from events section on mobile */
@@ -1033,6 +1058,14 @@ body.light-mode .subscribe-btn-mobile {
 
 body.light-mode .subscribe-btn-mobile:hover {
     background: #7a433e;
+}
+
+body.light-mode .scroll-prompt {
+    color: rgba(26, 41, 68, 0.6);
+}
+
+body.light-mode .scroll-prompt i {
+    color: #93504B;
 }
 
 /* Events Section - Light Mode */
